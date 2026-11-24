@@ -52,18 +52,54 @@
       text-align: center;
     }
 
+    .cover-stage {
+      position: relative;
+      width: 100%;
+      max-height: 310px;
+      margin-bottom: 18px;
+      perspective: 1000px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .cover-wrap {
+      --rx: 4deg;
+      --ry: -8deg;
+      --gx: 50%;
+      --gy: 30%;
       position: relative;
       width: 100%;
       max-height: 300px;
       border-radius: 14px;
       overflow: hidden;
       background: #0d1018;
-      border: 1px solid var(--border);
-      margin-bottom: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
       display: flex;
       align-items: center;
       justify-content: center;
+      transform-style: preserve-3d;
+      transform: rotateX(var(--rx)) rotateY(var(--ry));
+      box-shadow:
+        -10px 16px 28px rgba(0, 0, 0, 0.65),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+      transition: transform 0.14s ease-out, box-shadow 0.2s ease;
+      touch-action: none;
+    }
+
+    .cover-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(
+        circle at var(--gx) var(--gy),
+        rgba(255, 255, 255, 0.24) 0%,
+        rgba(255, 255, 255, 0.05) 35%,
+        transparent 68%
+      );
+      mix-blend-mode: screen;
+      transition: background 0.12s ease-out;
     }
 
     .cover-wrap img {
@@ -72,6 +108,8 @@
       max-height: 300px;
       object-fit: contain;
       display: block;
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
     .btn-arrow {
@@ -104,6 +142,7 @@
       top: 10px;
       left: 10px;
       z-index: 5;
+      transform: translateZ(18px);
     }
 
     .badge {
@@ -296,9 +335,11 @@
 <body>
   <main class="launcher" id="launcher">
     <section class="card">
-      <div class="cover-wrap">
-        <button class="btn-arrow btn-back-cover" id="btn-back-cover" type="button" aria-label="Voltar" title="Voltar">←</button>
-        <img src="Mega%20Man%203%20NES.jpg" alt="Capa de Mega Man 3 (NES)" />
+      <div class="cover-stage">
+        <div class="cover-wrap" id="cover-wrap">
+          <button class="btn-arrow btn-back-cover" id="btn-back-cover" type="button" aria-label="Voltar" title="Voltar">←</button>
+          <img src="Mega%20Man%203%20NES.jpg" alt="Capa de Mega Man 3 (NES)" />
+        </div>
       </div>
       <span class="badge">Nintendo Entertainment System • NES</span>
       <h1>Mega Man 3</h1>
@@ -346,6 +387,7 @@
     const launcherEl = document.getElementById("launcher");
     const emulatorScreenEl = document.getElementById("emulator-screen");
     const gameContainerEl = document.getElementById("game");
+    const coverWrapEl = document.getElementById("cover-wrap");
     const btnStart = document.getElementById("btn-start");
     const btnExit = document.getElementById("btn-exit");
     const btnBackCover = document.getElementById("btn-back-cover");
@@ -354,6 +396,34 @@
     const statusMsg = document.getElementById("status-msg");
 
     let emulatorLoaded = false;
+
+    function updateCoverTilt(clientX, clientY) {
+      const rect = coverWrapEl.getBoundingClientRect();
+      const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      const y = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
+      const ry = (x - 0.5) * 26;
+      const rx = (0.5 - y) * 22;
+
+      coverWrapEl.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
+      coverWrapEl.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
+      coverWrapEl.style.setProperty("--gx", `${(x * 100).toFixed(0)}%`);
+      coverWrapEl.style.setProperty("--gy", `${(y * 100).toFixed(0)}%`);
+    }
+
+    function resetCoverTilt() {
+      coverWrapEl.style.setProperty("--rx", "4deg");
+      coverWrapEl.style.setProperty("--ry", "-8deg");
+      coverWrapEl.style.setProperty("--gx", "50%");
+      coverWrapEl.style.setProperty("--gy", "30%");
+    }
+
+    coverWrapEl.addEventListener("pointermove", (e) => {
+      if (e.target.closest(".btn-back-cover")) return;
+      updateCoverTilt(e.clientX, e.clientY);
+    });
+
+    coverWrapEl.addEventListener("pointerleave", resetCoverTilt);
+    coverWrapEl.addEventListener("pointercancel", resetCoverTilt);
 
     async function verificarRomAcessivel(url) {
       try {
