@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Kubo Touch — Metroid (NES)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #0b0d12;
+      color: #f4f6fb;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    header {
+      padding: 10px 16px;
+      background: #131722;
+      border-bottom: 1px solid #232a3d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .brand { font-weight: 700; letter-spacing: 0.5px; color: #ff5a36; }
+    .game-title { font-weight: 600; }
+    #game-container {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #game {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="brand">KUBO TOUCH</span>
+    <span class="game-title">Metroid (NES)</span>
+  </header>
+
+  <div id="game-container">
+    <div id="game"></div>
+  </div>
+
+  <script>
+    EJS_player = "#game";
+    EJS_core = "nes";
+    EJS_gameName = "Metroid";
+    EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
+    // Altera o caminho abaixo para o nome exato do teu ficheiro ROM na pasta
+    EJS_gameUrl = "./metroid.nes";
+    EJS_startOnLoaded = true;
+    EJS_virtualGamepad = true;
+  </script>
+  <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+</body>
+</html>
