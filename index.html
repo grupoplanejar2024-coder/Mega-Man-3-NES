@@ -13,6 +13,10 @@
       --text: #f5f7fa;
       --muted: #9aa3b2;
       --border: rgba(255, 255, 255, 0.08);
+      --cart-gray: #c6c9cf;
+      --cart-gray-light: #dfe2e8;
+      --cart-gray-dark: #8c9099;
+      --cart-gray-deep: #6b6f78;
     }
 
     *,
@@ -52,64 +56,209 @@
       text-align: center;
     }
 
-    .cover-stage {
+    /* Palco 3D do Cartucho NES */
+    .cart-stage {
       position: relative;
       width: 100%;
-      max-height: 310px;
+      height: 290px;
       margin-bottom: 18px;
-      perspective: 1000px;
+      perspective: 1100px;
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .cover-wrap {
-      --rx: 4deg;
-      --ry: -8deg;
-      --gx: 50%;
-      --gy: 30%;
-      position: relative;
-      width: 100%;
-      max-height: 300px;
-      border-radius: 14px;
-      overflow: hidden;
-      background: #0d1018;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transform-style: preserve-3d;
-      transform: rotateX(var(--rx)) rotateY(var(--ry));
-      box-shadow:
-        -10px 16px 28px rgba(0, 0, 0, 0.65),
-        0 0 0 1px rgba(255, 255, 255, 0.06);
-      transition: transform 0.14s ease-out, box-shadow 0.2s ease;
       touch-action: none;
     }
 
-    .cover-wrap::after {
+    .nes-cart {
+      --rx: 6deg;
+      --ry: -18deg;
+      --gx: 50%;
+      --gy: 30%;
+      --w: 212px;
+      --h: 244px;
+      --d: 34px;
+
+      position: relative;
+      width: var(--w);
+      height: var(--h);
+      transform-style: preserve-3d;
+      transform: rotateX(var(--rx)) rotateY(var(--ry));
+      transition: transform 0.14s ease-out;
+    }
+
+    .cart-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 6px;
+    }
+
+    /* Frente do cartucho NES */
+    .cart-front {
+      width: var(--w);
+      height: var(--h);
+      transform: translateZ(calc(var(--d) / 2));
+      background: linear-gradient(160deg, var(--cart-gray-light) 0%, var(--cart-gray) 65%, var(--cart-gray-dark) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 14px 14px 12px;
+      overflow: hidden;
+    }
+
+    /* Friso superior clássico do cartucho NES */
+    .cart-ridge-grip {
+      width: 100%;
+      height: 22px;
+      border-radius: 4px;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.14) 0px,
+        rgba(0, 0, 0, 0.14) 2px,
+        rgba(255, 255, 255, 0.25) 2px,
+        rgba(255, 255, 255, 0.25) 4px
+      );
+      border: 1px solid rgba(0, 0, 0, 0.16);
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    /* Rótulo / Capa do jogo no cartucho */
+    .cart-label {
+      position: relative;
+      width: 100%;
+      flex: 1;
+      border-radius: 5px;
+      overflow: hidden;
+      background: #0d1018;
+      border: 2px solid #2b2e36;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cart-label img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    /* Reflexo especular sobre a frente e rótulo */
+    .cart-front::after {
       content: "";
       position: absolute;
       inset: 0;
       pointer-events: none;
       background: radial-gradient(
         circle at var(--gx) var(--gy),
-        rgba(255, 255, 255, 0.24) 0%,
-        rgba(255, 255, 255, 0.05) 35%,
-        transparent 68%
+        rgba(255, 255, 255, 0.28) 0%,
+        rgba(255, 255, 255, 0.05) 38%,
+        transparent 70%
       );
       mix-blend-mode: screen;
-      transition: background 0.12s ease-out;
     }
 
-    .cover-wrap img {
+    /* Traseira do cartucho */
+    .cart-back {
+      width: var(--w);
+      height: var(--h);
+      transform: rotateY(180deg) translateZ(calc(var(--d) / 2));
+      background: linear-gradient(180deg, var(--cart-gray-dark), var(--cart-gray-deep));
+      border: 1px solid rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .cart-back-sticker {
       width: 100%;
-      height: 100%;
-      max-height: 300px;
-      object-fit: contain;
-      display: block;
-      user-select: none;
-      -webkit-user-drag: none;
+      height: 76%;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(0, 0, 0, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(20, 24, 36, 0.7);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    /* Lateral esquerda */
+    .cart-left {
+      width: var(--d);
+      height: var(--h);
+      left: calc((var(--w) - var(--d)) / 2);
+      transform: rotateY(-90deg) translateZ(calc(var(--w) / 2));
+      background: linear-gradient(180deg, var(--cart-gray), var(--cart-gray-dark));
+      border: 1px solid rgba(0, 0, 0, 0.22);
+    }
+
+    /* Lateral direita */
+    .cart-right {
+      width: var(--d);
+      height: var(--h);
+      left: calc((var(--w) - var(--d)) / 2);
+      transform: rotateY(90deg) translateZ(calc(var(--w) / 2));
+      background: linear-gradient(180deg, var(--cart-gray-dark), var(--cart-gray-deep));
+      border: 1px solid rgba(0, 0, 0, 0.28);
+    }
+
+    /* Topo do cartucho */
+    .cart-top {
+      width: var(--w);
+      height: var(--d);
+      top: calc((var(--h) - var(--d)) / 2);
+      transform: rotateX(90deg) translateZ(calc(var(--h) / 2));
+      background: linear-gradient(90deg, var(--cart-gray-light), var(--cart-gray));
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    /* Base com encaixe de conectores */
+    .cart-bottom {
+      width: var(--w);
+      height: var(--d);
+      top: calc((var(--h) - var(--d)) / 2);
+      transform: rotateX(-90deg) translateZ(calc(var(--h) / 2));
+      background: var(--cart-gray-deep);
+      border: 1px solid rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cart-pins {
+      width: 72%;
+      height: 10px;
+      background: repeating-linear-gradient(
+        to right,
+        #23262e 0px,
+        #23262e 3px,
+        #8c9099 3px,
+        #8c9099 6px
+      );
+      border-radius: 2px;
+    }
+
+    /* Sombra projetada abaixo do cartucho */
+    .cart-shadow {
+      position: absolute;
+      bottom: 6px;
+      width: 190px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.65);
+      filter: blur(10px);
+      pointer-events: none;
     }
 
     .btn-arrow {
@@ -139,10 +288,9 @@
 
     .btn-back-cover {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 5;
-      transform: translateZ(18px);
+      top: 4px;
+      left: 4px;
+      z-index: 10;
     }
 
     .badge {
@@ -335,12 +483,32 @@
 <body>
   <main class="launcher" id="launcher">
     <section class="card">
-      <div class="cover-stage">
-        <div class="cover-wrap" id="cover-wrap">
-          <button class="btn-arrow btn-back-cover" id="btn-back-cover" type="button" aria-label="Voltar" title="Voltar">←</button>
-          <img src="Mega%20Man%203%20NES.jpg" alt="Capa de Mega Man 3 (NES)" />
+      <div class="cart-stage" id="cart-stage">
+        <button class="btn-arrow btn-back-cover" id="btn-back-cover" type="button" aria-label="Voltar" title="Voltar">←</button>
+
+        <div class="nes-cart" id="nes-cart">
+          <div class="cart-face cart-front">
+            <div class="cart-ridge-grip"></div>
+            <div class="cart-label">
+              <img src="Mega%20Man%203%20NES.jpg" alt="Capa de Mega Man 3 no cartucho NES" />
+            </div>
+          </div>
+
+          <div class="cart-face cart-back">
+            <div class="cart-back-sticker">NINTENDO • NES</div>
+          </div>
+
+          <div class="cart-face cart-left"></div>
+          <div class="cart-face cart-right"></div>
+          <div class="cart-face cart-top"></div>
+          <div class="cart-face cart-bottom">
+            <div class="cart-pins"></div>
+          </div>
         </div>
+
+        <div class="cart-shadow"></div>
       </div>
+
       <span class="badge">Nintendo Entertainment System • NES</span>
       <h1>Mega Man 3</h1>
       <p class="subtitle">Toca em jogar para iniciar o emulador no navegador.</p>
@@ -387,7 +555,8 @@
     const launcherEl = document.getElementById("launcher");
     const emulatorScreenEl = document.getElementById("emulator-screen");
     const gameContainerEl = document.getElementById("game");
-    const coverWrapEl = document.getElementById("cover-wrap");
+    const cartStageEl = document.getElementById("cart-stage");
+    const nesCartEl = document.getElementById("nes-cart");
     const btnStart = document.getElementById("btn-start");
     const btnExit = document.getElementById("btn-exit");
     const btnBackCover = document.getElementById("btn-back-cover");
@@ -397,33 +566,33 @@
 
     let emulatorLoaded = false;
 
-    function updateCoverTilt(clientX, clientY) {
-      const rect = coverWrapEl.getBoundingClientRect();
+    function updateCartTilt(clientX, clientY) {
+      const rect = cartStageEl.getBoundingClientRect();
       const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
       const y = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
-      const ry = (x - 0.5) * 26;
-      const rx = (0.5 - y) * 22;
+      const ry = (x - 0.5) * 44;
+      const rx = (0.5 - y) * 28;
 
-      coverWrapEl.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
-      coverWrapEl.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
-      coverWrapEl.style.setProperty("--gx", `${(x * 100).toFixed(0)}%`);
-      coverWrapEl.style.setProperty("--gy", `${(y * 100).toFixed(0)}%`);
+      nesCartEl.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
+      nesCartEl.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
+      nesCartEl.style.setProperty("--gx", `${(x * 100).toFixed(0)}%`);
+      nesCartEl.style.setProperty("--gy", `${(y * 100).toFixed(0)}%`);
     }
 
-    function resetCoverTilt() {
-      coverWrapEl.style.setProperty("--rx", "4deg");
-      coverWrapEl.style.setProperty("--ry", "-8deg");
-      coverWrapEl.style.setProperty("--gx", "50%");
-      coverWrapEl.style.setProperty("--gy", "30%");
+    function resetCartTilt() {
+      nesCartEl.style.setProperty("--rx", "6deg");
+      nesCartEl.style.setProperty("--ry", "-18deg");
+      nesCartEl.style.setProperty("--gx", "50%");
+      nesCartEl.style.setProperty("--gy", "30%");
     }
 
-    coverWrapEl.addEventListener("pointermove", (e) => {
+    cartStageEl.addEventListener("pointermove", (e) => {
       if (e.target.closest(".btn-back-cover")) return;
-      updateCoverTilt(e.clientX, e.clientY);
+      updateCartTilt(e.clientX, e.clientY);
     });
 
-    coverWrapEl.addEventListener("pointerleave", resetCoverTilt);
-    coverWrapEl.addEventListener("pointercancel", resetCoverTilt);
+    cartStageEl.addEventListener("pointerleave", resetCartTilt);
+    cartStageEl.addEventListener("pointercancel", resetCartTilt);
 
     async function verificarRomAcessivel(url) {
       try {
