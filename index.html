@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -97,6 +97,7 @@
       transform: rotateY(-8deg) rotateX(3deg);
       transition: transform 0.35s ease;
       display: block;
+      background: #0b1224;
     }
 
     .cover-wrap:hover .cover-3d {
@@ -282,7 +283,7 @@
       <div class="cover-wrap">
         <img
           class="cover-3d"
-          src="Mega Man 3 NES_4.jpg"
+          src="./Mega%20Man%203%20NES.jpg"
           alt="Capa europeia de Mega Man 3 para Nintendo Entertainment System"
         />
       </div>
@@ -298,10 +299,10 @@
             Carregar ROM (.nes)
           </label>
           <input id="rom-input" type="file" accept=".nes" />
-          <button class="btn-secondary" id="toggle-pad-btn" type="button">Controlo Táctil</button>
+          <button class="btn-secondary" id="toggle-pad-btn" type="button">Controle Tátil</button>
         </div>
         <div class="status" id="status-msg">
-          Pronto para iniciar a partir de <code>./roms/mega-man-3.nes</code> ou carregar um ficheiro local.
+          Pronto. Se a ROM padrão não existir no repositório, use <strong>Carregar ROM (.nes)</strong>.
         </div>
       </div>
     </section>
@@ -337,7 +338,8 @@
   </main>
 
   <script>
-    const DEFAULT_ROM_URL = "./roms/mega-man-3.nes";
+    // Altere para o nome exato da ROM na raiz do repositório, ex.: "./Mega Man 3 (USA).nes"
+    const DEFAULT_ROM_URL = "./Mega%20Man%203%20(USA).nes";
     let customRomObjectUrl = null;
     let emulatorLoaded = false;
 
@@ -352,7 +354,26 @@
       statusMsg.innerHTML = text;
     }
 
-    function launchEmulator(romUrl, label) {
+    async function checkDefaultRomExists(url) {
+      try {
+        const res = await fetch(url, { method: "HEAD" });
+        return res.ok;
+      } catch {
+        return false;
+      }
+    }
+
+    async function launchEmulator(romUrl, label, isLocalFile = false) {
+      if (!isLocalFile) {
+        const exists = await checkDefaultRomExists(romUrl);
+        if (!exists) {
+          setStatus(
+            `ROM padrão não encontrada em <code>${decodeURIComponent(romUrl)}</code>. Envie o arquivo <code>.nes</code> no GitHub ou clique em <strong>Carregar ROM (.nes)</strong>.`
+          );
+          return;
+        }
+      }
+
       shell.classList.add("active");
       if (window.innerWidth <= 900) {
         touchPad.classList.add("active");
@@ -364,7 +385,7 @@
       window.EJS_gameUrl = romUrl;
       window.EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
       window.EJS_startOnLoaded = true;
-      window.EJS_language = "pt-PT";
+      window.EJS_language = "pt-BR";
 
       if (!emulatorLoaded) {
         const script = document.createElement("script");
@@ -372,19 +393,23 @@
         script.async = true;
         script.onload = () => {
           emulatorLoaded = true;
-          setStatus(`A carregar <strong>Mega Man 3</strong> (${label})...`);
+          setStatus(`Carregando <strong>Mega Man 3</strong> (${label})...`);
         };
         script.onerror = () => {
-          setStatus("Falha ao carregar o EmulatorJS. Verifica a ligação à internet ou o caminho dos ficheiros.");
+          setStatus("Falha ao carregar o EmulatorJS. Verifique a conexão com a internet.");
         };
         document.body.appendChild(script);
       } else {
-        setStatus(`ROM actualizada (${label}). Recarrega a página se precisares de reiniciar a instância do núcleo.`);
+        setStatus(`ROM atualizada (${label}). Recarregue a página se precisar reiniciar o emulador.`);
       }
     }
 
     startBtn.addEventListener("click", () => {
-      launchEmulator(customRomObjectUrl || DEFAULT_ROM_URL, customRomObjectUrl ? "ficheiro local" : "ROM padrão");
+      if (customRomObjectUrl) {
+        launchEmulator(customRomObjectUrl, "arquivo local", true);
+      } else {
+        launchEmulator(DEFAULT_ROM_URL, "ROM do repositório", false);
+      }
     });
 
     romInput.addEventListener("change", (event) => {
@@ -394,8 +419,8 @@
         URL.revokeObjectURL(customRomObjectUrl);
       }
       customRomObjectUrl = URL.createObjectURL(file);
-      setStatus(`Ficheiro selecionado: <strong>${file.name}</strong>. A iniciar...`);
-      launchEmulator(customRomObjectUrl, file.name);
+      setStatus(`Arquivo selecionado: <strong>${file.name}</strong>. Iniciando...`);
+      launchEmulator(customRomObjectUrl, file.name, true);
     });
 
     togglePadBtn.addEventListener("click", () => {
@@ -429,19 +454,6 @@
       btn.addEventListener("pointerleave", release);
       btn.addEventListener("pointercancel", release);
     });
-
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js").then(
-          () => {
-            document.getElementById("pwa-status").textContent = "PWA Offline Ready";
-          },
-          () => {
-            document.getElementById("pwa-status").textContent = "NFC Ready";
-          }
-        );
-      });
-    }
   </script>
 </body>
 </html>
