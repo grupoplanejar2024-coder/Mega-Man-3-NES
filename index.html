@@ -1,174 +1,182 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#0b1021" />
-  <title>Kubo Touch — Mega Man 3 (NES)</title>
+  <title>Mega Man 3 (NES) — Kubo Touch</title>
   <style>
     :root {
-      --bg: #070b17;
-      --panel: #11182d;
-      --accent: #2563eb;
-      --accent-2: #ef4444;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --border: rgba(255, 255, 255, 0.12);
+      --bg: #0b0d12;
+      --card: #141824;
+      --accent: #d9381e;
+      --accent-hover: #f24b30;
+      --text: #f5f7fa;
+      --muted: #9aa3b2;
+      --border: rgba(255, 255, 255, 0.08);
     }
 
-    * {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
-      margin: 0;
-      min-height: 100dvh;
-      background: radial-gradient(circle at top, #13224a 0%, var(--bg) 65%);
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top, #181e2e 0%, var(--bg) 70%);
       color: var(--text);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 16px;
-      gap: 16px;
+      overflow: hidden;
     }
 
-    .topbar {
+    .launcher {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
       width: 100%;
-      max-width: 920px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      background: rgba(17, 24, 45, 0.85);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 10px 16px;
-      backdrop-filter: blur(10px);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      letter-spacing: 0.4px;
-    }
-
-    .badge {
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(37, 99, 235, 0.22);
-      border: 1px solid rgba(96, 165, 250, 0.45);
-      color: #bfdbfe;
-    }
-
-    .stage {
-      width: 100%;
-      max-width: 920px;
-      background: var(--panel);
+      max-width: 420px;
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 18px;
+      padding: 22px;
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 160px 1fr;
-      gap: 18px;
-      align-items: center;
+      text-align: center;
     }
 
     .cover-wrap {
-      perspective: 900px;
-    }
-
-    .cover-3d {
+      position: relative;
       width: 100%;
-      aspect-ratio: 3 / 4;
-      object-fit: cover;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.6);
-      transform: rotateY(-8deg) rotateX(3deg);
-      transition: transform 0.35s ease;
-      display: block;
-      background: #0b1224;
-    }
-
-    .cover-wrap:hover .cover-3d {
-      transform: rotateY(0deg) rotateX(0deg) scale(1.02);
-    }
-
-    .meta h1 {
-      margin: 0 0 6px;
-      font-size: clamp(1.35rem, 3vw, 2rem);
-    }
-
-    .meta p {
-      margin: 0 0 14px;
-      color: var(--muted);
-      line-height: 1.45;
-      font-size: 0.95rem;
-    }
-
-    .actions {
+      max-height: 300px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0d1018;
+      border: 1px solid var(--border);
+      margin-bottom: 18px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+      align-items: center;
+      justify-content: center;
     }
 
-    button,
-    .file-label {
-      cursor: pointer;
-      border: none;
-      border-radius: 12px;
-      padding: 11px 16px;
-      font-weight: 600;
-      font-size: 0.92rem;
+    .cover-wrap img {
+      width: 100%;
+      height: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .btn-arrow {
+      width: 38px;
+      height: 38px;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      transition: transform 0.12s ease, opacity 0.2s ease, background 0.2s ease;
-    }
-
-    button:active,
-    .file-label:active {
-      transform: scale(0.97);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), #1d4ed8);
+      justify-content: center;
+      font-size: 1.15rem;
+      font-weight: 700;
       color: #fff;
+      background: rgba(15, 18, 28, 0.84);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.12s ease, background 0.15s ease;
     }
 
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--text);
-      border: 1px solid var(--border);
+    .btn-arrow:hover {
+      background: rgba(30, 35, 52, 0.96);
     }
 
-    input[type="file"] {
-      display: none;
+    .btn-arrow:active {
+      transform: scale(0.95);
     }
 
-    .emulator-shell {
-      margin-top: 18px;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: #000;
-      aspect-ratio: 4 / 3;
+    .btn-back-cover {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 5;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ffd166;
+      background: rgba(255, 209, 102, 0.12);
+      border: 1px solid rgba(255, 209, 102, 0.25);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 1.45rem;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .btn-play {
       width: 100%;
-      position: relative;
-      display: none;
+      padding: 15px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: transform 0.12s ease, background 0.15s ease;
+      box-shadow: 0 10px 24px rgba(217, 56, 30, 0.35);
     }
 
-    .emulator-shell.active {
+    .btn-play:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-play:active {
+      transform: scale(0.98);
+    }
+
+    .status {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      min-height: 18px;
+    }
+
+    .status.error {
+      color: #ff6b6b;
+    }
+
+    /* Área do emulador */
+    #emulator-screen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100dvh;
+      background: #000;
+      z-index: 10;
+    }
+
+    #emulator-screen.active {
       display: block;
     }
 
@@ -177,282 +185,119 @@
       height: 100%;
     }
 
-    .touch-pad {
-      margin-top: 16px;
-      display: none;
-      user-select: none;
-      touch-action: none;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      padding: 12px;
-      border-radius: 16px;
-      background: rgba(9, 13, 26, 0.85);
-      border: 1px solid var(--border);
-    }
-
-    .touch-pad.active {
-      display: flex;
-    }
-
-    .dpad {
-      display: grid;
-      grid-template-columns: repeat(3, 52px);
-      grid-template-rows: repeat(3, 52px);
-      gap: 6px;
-    }
-
-    .pad-btn {
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 12px;
-      font-weight: 700;
-      padding: 0;
-      justify-content: center;
-      min-height: 52px;
-      min-width: 52px;
-    }
-
-    .pad-btn.round {
-      border-radius: 999px;
-      width: 60px;
-      height: 60px;
-      background: rgba(37, 99, 235, 0.28);
-      border-color: rgba(96, 165, 250, 0.5);
-    }
-
-    .pad-btn.b-btn {
-      background: rgba(239, 68, 68, 0.28);
-      border-color: rgba(248, 113, 113, 0.5);
-    }
-
-    .action-cluster {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
-    }
-
-    .ab-row,
-    .sys-row {
-      display: flex;
-      gap: 10px;
-    }
-
-    .sys-btn {
-      padding: 8px 12px;
-      min-height: auto;
-      font-size: 0.75rem;
-      border-radius: 999px;
-    }
-
-    .status {
-      margin-top: 12px;
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    @media (max-width: 640px) {
-      .hero {
-        grid-template-columns: 110px 1fr;
-        gap: 14px;
-      }
-
-      .touch-pad {
-        flex-direction: column;
-      }
-
-      .action-cluster {
-        align-items: center;
-      }
+    .btn-exit {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 50;
     }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <span>KUBO TOUCH</span>
-      <span class="badge">NES • FCEUmm</span>
-    </div>
-    <span class="badge" id="pwa-status">NFC Ready</span>
-  </header>
-
-  <main class="stage">
-    <section class="hero">
+  <main class="launcher" id="launcher">
+    <section class="card">
       <div class="cover-wrap">
-        <img
-          class="cover-3d"
-          src="./Mega%20Man%203%20NES.jpg"
-          alt="Capa europeia de Mega Man 3 para Nintendo Entertainment System"
-        />
+        <button class="btn-arrow btn-back-cover" id="btn-back-cover" type="button" aria-label="Voltar" title="Voltar">←</button>
+        <img src="Mega%20Man%203%20NES.jpg" alt="Capa de Mega Man 3 (NES)" />
       </div>
-      <div class="meta">
-        <h1>Mega Man 3</h1>
-        <p>
-          Plataforma clássica da Capcom para o Nintendo Entertainment System (1990), com o cão robótico Rush,
-          o deslize tático e oito Robot Masters.
-        </p>
-        <div class="actions">
-          <button class="btn-primary" id="start-btn" type="button">Iniciar Jogo</button>
-          <label class="file-label btn-secondary" for="rom-input">
-            Carregar ROM (.nes)
-          </label>
-          <input id="rom-input" type="file" accept=".nes" />
-          <button class="btn-secondary" id="toggle-pad-btn" type="button">Controle Tátil</button>
-        </div>
-        <div class="status" id="status-msg">
-          Pronto. Se a ROM padrão não existir no repositório, use <strong>Carregar ROM (.nes)</strong>.
-        </div>
-      </div>
-    </section>
-
-    <section class="emulator-shell" id="emulator-shell" aria-label="Área do emulador">
-      <div id="game"></div>
-    </section>
-
-    <section class="touch-pad" id="touch-pad" aria-label="Comando virtual NES">
-      <div class="dpad">
-        <div></div>
-        <button class="pad-btn" data-key="ArrowUp" type="button">▲</button>
-        <div></div>
-        <button class="pad-btn" data-key="ArrowLeft" type="button">◀</button>
-        <div></div>
-        <button class="pad-btn" data-key="ArrowRight" type="button">▶</button>
-        <div></div>
-        <button class="pad-btn" data-key="ArrowDown" type="button">▼</button>
-        <div></div>
-      </div>
-
-      <div class="action-cluster">
-        <div class="ab-row">
-          <button class="pad-btn round b-btn" data-key="KeyZ" type="button">B</button>
-          <button class="pad-btn round" data-key="KeyX" type="button">A</button>
-        </div>
-        <div class="sys-row">
-          <button class="pad-btn sys-btn" data-key="ShiftRight" type="button">SELECT</button>
-          <button class="pad-btn sys-btn" data-key="Enter" type="button">START</button>
-        </div>
-      </div>
+      <span class="badge">Nintendo Entertainment System • NES</span>
+      <h1>Mega Man 3</h1>
+      <p class="subtitle">Toca em jogar para iniciar o emulador no navegador.</p>
+      <button class="btn-play" id="btn-start" type="button">▶ Jogar Agora</button>
+      <p class="status" id="status-msg"></p>
     </section>
   </main>
 
-  <script>
-    // Altere para o nome exato da ROM na raiz do repositório, ex.: "./Mega Man 3 (USA).nes"
-    const DEFAULT_ROM_URL = "./Mega%20Man%203%20(USA).nes";
-    let customRomObjectUrl = null;
-    let emulatorLoaded = false;
+  <section id="emulator-screen" aria-label="Tela do jogo">
+    <button class="btn-arrow btn-exit" id="btn-exit" type="button" aria-label="Voltar à capa" title="Voltar à capa">←</button>
+    <div id="game"></div>
+  </section>
 
-    const startBtn = document.getElementById("start-btn");
-    const romInput = document.getElementById("rom-input");
-    const togglePadBtn = document.getElementById("toggle-pad-btn");
-    const shell = document.getElementById("emulator-shell");
-    const touchPad = document.getElementById("touch-pad");
+  <script>
+    const ROM_FILENAME = "Mega Man 3 (USA).nes";
+    const COVER_FILENAME = "Mega Man 3 NES.jpg";
+
+    const launcherEl = document.getElementById("launcher");
+    const emulatorScreenEl = document.getElementById("emulator-screen");
+    const gameContainerEl = document.getElementById("game");
+    const btnStart = document.getElementById("btn-start");
+    const btnExit = document.getElementById("btn-exit");
+    const btnBackCover = document.getElementById("btn-back-cover");
     const statusMsg = document.getElementById("status-msg");
 
-    function setStatus(text) {
-      statusMsg.innerHTML = text;
-    }
+    let emulatorLoaded = false;
 
-    async function checkDefaultRomExists(url) {
+    async function verificarRomAcessivel(url) {
       try {
-        const res = await fetch(url, { method: "HEAD" });
-        return res.ok;
-      } catch {
-        return false;
+        const res = await fetch(url, { method: "HEAD", cache: "no-store" });
+        if (!res.ok) {
+          return { ok: false, motivo: `Não foi possível aceder à ROM (HTTP ${res.status}).` };
+        }
+        const len = Number(res.headers.get("content-length") || 0);
+        if (res.headers.has("content-length") && len < 1024) {
+          return { ok: false, motivo: "O ficheiro da ROM parece vazio ou corrompido (< 1 KB)." };
+        }
+        return { ok: true };
+      } catch (err) {
+        return { ok: true };
       }
     }
 
-    async function launchEmulator(romUrl, label, isLocalFile = false) {
-      if (!isLocalFile) {
-        const exists = await checkDefaultRomExists(romUrl);
-        if (!exists) {
-          setStatus(
-            `ROM padrão não encontrada em <code>${decodeURIComponent(romUrl)}</code>. Envie o arquivo <code>.nes</code> no GitHub ou clique em <strong>Carregar ROM (.nes)</strong>.`
-          );
-          return;
-        }
-      }
-
-      shell.classList.add("active");
-      if (window.innerWidth <= 900) {
-        touchPad.classList.add("active");
-      }
+    function iniciarEmulatorJS(romUrl) {
+      if (emulatorLoaded) return;
+      emulatorLoaded = true;
 
       window.EJS_player = "#game";
-      window.EJS_core = "fceumm";
+      window.EJS_core = "nes";
       window.EJS_gameName = "Mega Man 3";
       window.EJS_gameUrl = romUrl;
       window.EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
       window.EJS_startOnLoaded = true;
-      window.EJS_language = "pt-BR";
+      window.EJS_fullscreenOnLoaded = false;
+      window.EJS_virtualGamepad = true;
+      window.EJS_backgroundImage = encodeURI(COVER_FILENAME);
 
-      if (!emulatorLoaded) {
-        const script = document.createElement("script");
-        script.src = "https://cdn.emulatorjs.org/stable/data/loader.js";
-        script.async = true;
-        script.onload = () => {
-          emulatorLoaded = true;
-          setStatus(`Carregando <strong>Mega Man 3</strong> (${label})...`);
-        };
-        script.onerror = () => {
-          setStatus("Falha ao carregar o EmulatorJS. Verifique a conexão com a internet.");
-        };
-        document.body.appendChild(script);
-      } else {
-        setStatus(`ROM atualizada (${label}). Recarregue a página se precisar reiniciar o emulador.`);
-      }
+      const script = document.createElement("script");
+      script.src = "https://cdn.emulatorjs.org/stable/data/loader.js";
+      script.async = true;
+      script.onerror = () => {
+        statusMsg.textContent = "Falha ao carregar o motor do EmulatorJS. Verifica a tua ligação.";
+        statusMsg.classList.add("error");
+      };
+      document.body.appendChild(script);
     }
 
-    startBtn.addEventListener("click", () => {
-      if (customRomObjectUrl) {
-        launchEmulator(customRomObjectUrl, "arquivo local", true);
+    btnStart.addEventListener("click", async () => {
+      statusMsg.classList.remove("error");
+      statusMsg.textContent = "A verificar ficheiro da ROM...";
+
+      const romUrl = encodeURI(ROM_FILENAME);
+      const check = await verificarRomAcessivel(romUrl);
+
+      if (!check.ok) {
+        statusMsg.textContent = `${check.motivo} Confere o nome exato do ficheiro .nes na pasta.`;
+        statusMsg.classList.add("error");
+        return;
+      }
+
+      launcherEl.style.display = "none";
+      emulatorScreenEl.classList.add("active");
+      gameContainerEl.style.width = "100%";
+      gameContainerEl.style.height = "100%";
+
+      iniciarEmulatorJS(romUrl);
+    });
+
+    btnBackCover.addEventListener("click", () => {
+      if (window.history.length > 1) {
+        window.history.back();
       } else {
-        launchEmulator(DEFAULT_ROM_URL, "ROM do repositório", false);
+        statusMsg.textContent = "Já estás na tela inicial do jogo.";
       }
     });
 
-    romInput.addEventListener("change", (event) => {
-      const file = event.target.files?.[0];
-      if (!file) return;
-      if (customRomObjectUrl) {
-        URL.revokeObjectURL(customRomObjectUrl);
-      }
-      customRomObjectUrl = URL.createObjectURL(file);
-      setStatus(`Arquivo selecionado: <strong>${file.name}</strong>. Iniciando...`);
-      launchEmulator(customRomObjectUrl, file.name, true);
-    });
-
-    togglePadBtn.addEventListener("click", () => {
-      touchPad.classList.toggle("active");
-    });
-
-    function dispatchKey(type, code) {
-      const ev = new KeyboardEvent(type, {
-        code,
-        key: code,
-        bubbles: true,
-        cancelable: true
-      });
-      window.dispatchEvent(ev);
-      document.dispatchEvent(ev);
-    }
-
-    document.querySelectorAll(".pad-btn[data-key]").forEach((btn) => {
-      const code = btn.dataset.key;
-      const press = (e) => {
-        e.preventDefault();
-        dispatchKey("keydown", code);
-      };
-      const release = (e) => {
-        e.preventDefault();
-        dispatchKey("keyup", code);
-      };
-
-      btn.addEventListener("pointerdown", press);
-      btn.addEventListener("pointerup", release);
-      btn.addEventListener("pointerleave", release);
-      btn.addEventListener("pointercancel", release);
+    btnExit.addEventListener("click", () => {
+      window.location.reload();
     });
   </script>
 </body>
