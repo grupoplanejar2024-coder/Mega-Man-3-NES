@@ -13,10 +13,10 @@
       --text: #f5f7fa;
       --muted: #9aa3b2;
       --border: rgba(255, 255, 255, 0.08);
-      --cart-gray: #c6c9cf;
-      --cart-gray-light: #dfe2e8;
-      --cart-gray-dark: #8c9099;
-      --cart-gray-deep: #6b6f78;
+      --nes-top: #9fa3ac;
+      --nes-mid: #8b8f98;
+      --nes-dark: #6d717a;
+      --nes-deep: #52555c;
     }
 
     *,
@@ -56,11 +56,11 @@
       text-align: center;
     }
 
-    /* Palco 3D do Cartucho NES */
+    /* Palco 3D do Cartucho NES Clássico */
     .cart-stage {
       position: relative;
       width: 100%;
-      height: 290px;
+      height: 296px;
       margin-bottom: 18px;
       perspective: 1100px;
       display: flex;
@@ -70,13 +70,13 @@
     }
 
     .nes-cart {
-      --rx: 6deg;
-      --ry: -18deg;
-      --gx: 50%;
-      --gy: 30%;
-      --w: 212px;
-      --h: 244px;
-      --d: 34px;
+      --rx: 5deg;
+      --ry: -14deg;
+      --gx: 52%;
+      --gy: 28%;
+      --w: 214px;
+      --h: 248px;
+      --d: 32px;
 
       position: relative;
       width: var(--w);
@@ -90,51 +90,111 @@
       position: absolute;
       inset: 0;
       backface-visibility: hidden;
-      border-radius: 6px;
     }
 
-    /* Frente do cartucho NES */
+    /* Frente fiel ao formato clássico NES */
     .cart-front {
       width: var(--w);
       height: var(--h);
       transform: translateZ(calc(var(--d) / 2));
-      background: linear-gradient(160deg, var(--cart-gray-light) 0%, var(--cart-gray) 65%, var(--cart-gray-dark) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.45);
-      box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.12);
+      filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.55));
+    }
+
+    /* Corpo cinza superior até o recorte inferior esquerdo */
+    .cart-body-upper {
+      position: absolute;
+      inset: 0 0 22px 0;
+      background: linear-gradient(155deg, var(--nes-top) 0%, var(--nes-mid) 58%, var(--nes-dark) 100%);
+      border-radius: 5px 5px 0 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.35);
+      border-left: 1px solid rgba(255, 255, 255, 0.22);
+      border-right: 1px solid rgba(0, 0, 0, 0.35);
+      clip-path: polygon(
+        0% 0%,
+        100% 0%,
+        100% 100%,
+        11% 100%,
+        11% 92%,
+        0% 92%
+      );
+    }
+
+    /* Aba inferior direita */
+    .cart-foot-right {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 89%;
+      height: 24px;
+      background: linear-gradient(180deg, var(--nes-mid), var(--nes-dark));
+      border-bottom: 2px solid var(--nes-deep);
+      border-right: 1px solid rgba(0, 0, 0, 0.35);
+      border-radius: 0 0 4px 2px;
+    }
+
+    /* Rebaixo superior esquerdo do cartucho NES */
+    .cart-top-notches {
+      position: absolute;
+      top: 0;
+      left: 24px;
+      width: 48px;
+      height: 54px;
+      background: linear-gradient(180deg, #636770 0%, #777b85 100%);
+      border-left: 1px solid rgba(0, 0, 0, 0.35);
+      border-right: 1px solid rgba(255, 255, 255, 0.25);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+      border-radius: 0 0 4px 4px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding: 14px 14px 12px;
-      overflow: hidden;
+      justify-content: space-evenly;
+      padding: 6px 5px;
+      z-index: 2;
     }
 
-    /* Friso superior clássico do cartucho NES */
-    .cart-ridge-grip {
-      width: 100%;
-      height: 22px;
-      border-radius: 4px;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.14) 0px,
-        rgba(0, 0, 0, 0.14) 2px,
-        rgba(255, 255, 255, 0.25) 2px,
-        rgba(255, 255, 255, 0.25) 4px
-      );
-      border: 1px solid rgba(0, 0, 0, 0.16);
-      margin-bottom: 10px;
-      flex-shrink: 0;
+    .cart-top-notches span {
+      display: block;
+      height: 2px;
+      border-radius: 2px;
+      background: rgba(0, 0, 0, 0.38);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.22);
     }
 
-    /* Rótulo / Capa do jogo no cartucho */
+    /* Coluna de ranhuras verticais à esquerda do rótulo */
+    .cart-ribs {
+      position: absolute;
+      top: 58px;
+      left: 24px;
+      width: 48px;
+      height: 146px;
+      border-radius: 3px;
+      background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.22), rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0.24)),
+        repeating-linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.28) 0px,
+          rgba(0, 0, 0, 0.28) 2px,
+          rgba(255, 255, 255, 0.22) 2px,
+          rgba(255, 255, 255, 0.22) 5px
+        );
+      border: 1px solid rgba(0, 0, 0, 0.22);
+      z-index: 2;
+    }
+
+    /* Rótulo / Capa do jogo no lado direito da frente */
     .cart-label {
-      position: relative;
-      width: 100%;
-      flex: 1;
-      border-radius: 5px;
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      width: 118px;
+      height: 192px;
+      border-radius: 3px;
       overflow: hidden;
       background: #0d1018;
-      border: 2px solid #2b2e36;
-      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.65);
+      border: 2px solid #252830;
+      box-shadow:
+        inset 0 0 6px rgba(0, 0, 0, 0.7),
+        0 1px 0 rgba(255, 255, 255, 0.25);
+      z-index: 3;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -149,15 +209,29 @@
       -webkit-user-drag: none;
     }
 
-    /* Reflexo especular sobre a frente e rótulo */
+    /* Friso horizontal sutil abaixo do rótulo */
+    .cart-lower-groove {
+      position: absolute;
+      left: 82px;
+      right: 22px;
+      bottom: 34px;
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(0, 0, 0, 0.25);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.22);
+      z-index: 2;
+    }
+
+    /* Reflexo especular sobre a frente */
     .cart-front::after {
       content: "";
       position: absolute;
-      inset: 0;
+      inset: 0 0 22px 0;
       pointer-events: none;
+      z-index: 4;
       background: radial-gradient(
         circle at var(--gx) var(--gy),
-        rgba(255, 255, 255, 0.28) 0%,
+        rgba(255, 255, 255, 0.26) 0%,
         rgba(255, 255, 255, 0.05) 38%,
         transparent 70%
       );
@@ -169,8 +243,9 @@
       width: var(--w);
       height: var(--h);
       transform: rotateY(180deg) translateZ(calc(var(--d) / 2));
-      background: linear-gradient(180deg, var(--cart-gray-dark), var(--cart-gray-deep));
+      background: linear-gradient(180deg, var(--nes-dark), var(--nes-deep));
       border: 1px solid rgba(0, 0, 0, 0.35);
+      border-radius: 5px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -181,12 +256,12 @@
       width: 100%;
       height: 76%;
       border-radius: 4px;
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(0, 0, 0, 0.22);
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(0, 0, 0, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: rgba(20, 24, 36, 0.7);
+      color: rgba(20, 24, 36, 0.75);
       font-size: 0.72rem;
       font-weight: 800;
       letter-spacing: 0.14em;
@@ -199,8 +274,8 @@
       height: var(--h);
       left: calc((var(--w) - var(--d)) / 2);
       transform: rotateY(-90deg) translateZ(calc(var(--w) / 2));
-      background: linear-gradient(180deg, var(--cart-gray), var(--cart-gray-dark));
-      border: 1px solid rgba(0, 0, 0, 0.22);
+      background: linear-gradient(180deg, var(--nes-mid), var(--nes-dark));
+      border: 1px solid rgba(0, 0, 0, 0.25);
     }
 
     /* Lateral direita */
@@ -209,503 +284,11 @@
       height: var(--h);
       left: calc((var(--w) - var(--d)) / 2);
       transform: rotateY(90deg) translateZ(calc(var(--w) / 2));
-      background: linear-gradient(180deg, var(--cart-gray-dark), var(--cart-gray-deep));
-      border: 1px solid rgba(0, 0, 0, 0.28);
+      background: linear-gradient(180deg, var(--nes-dark), var(--nes-deep));
+      border: 1px solid rgba(0, 0, 0, 0.3);
     }
 
     /* Topo do cartucho */
     .cart-top {
       width: var(--w);
-      height: var(--d);
-      top: calc((var(--h) - var(--d)) / 2);
-      transform: rotateX(90deg) translateZ(calc(var(--h) / 2));
-      background: linear-gradient(90deg, var(--cart-gray-light), var(--cart-gray));
-      border: 1px solid rgba(255, 255, 255, 0.35);
-    }
-
-    /* Base com encaixe de conectores */
-    .cart-bottom {
-      width: var(--w);
-      height: var(--d);
-      top: calc((var(--h) - var(--d)) / 2);
-      transform: rotateX(-90deg) translateZ(calc(var(--h) / 2));
-      background: var(--cart-gray-deep);
-      border: 1px solid rgba(0, 0, 0, 0.35);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .cart-pins {
-      width: 72%;
-      height: 10px;
-      background: repeating-linear-gradient(
-        to right,
-        #23262e 0px,
-        #23262e 3px,
-        #8c9099 3px,
-        #8c9099 6px
-      );
-      border-radius: 2px;
-    }
-
-    /* Sombra projetada abaixo do cartucho */
-    .cart-shadow {
-      position: absolute;
-      bottom: 6px;
-      width: 190px;
-      height: 22px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.65);
-      filter: blur(10px);
-      pointer-events: none;
-    }
-
-    .btn-arrow {
-      width: 38px;
-      height: 38px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #fff;
-      background: rgba(15, 18, 28, 0.84);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform 0.12s ease, background 0.15s ease;
-    }
-
-    .btn-arrow:hover {
-      background: rgba(30, 35, 52, 0.96);
-    }
-
-    .btn-arrow:active {
-      transform: scale(0.95);
-    }
-
-    .btn-back-cover {
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      z-index: 10;
-    }
-
-    .badge {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #ffd166;
-      background: rgba(255, 209, 102, 0.12);
-      border: 1px solid rgba(255, 209, 102, 0.25);
-      padding: 4px 10px;
-      border-radius: 999px;
-      margin-bottom: 10px;
-    }
-
-    h1 {
-      font-size: 1.45rem;
-      line-height: 1.25;
-      margin-bottom: 6px;
-    }
-
-    .subtitle {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-bottom: 18px;
-    }
-
-    .btn-play {
-      width: 100%;
-      padding: 15px 20px;
-      font-size: 1rem;
-      font-weight: 700;
-      color: #fff;
-      background: var(--accent);
-      border: none;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: transform 0.12s ease, background 0.15s ease;
-      box-shadow: 0 10px 24px rgba(217, 56, 30, 0.35);
-    }
-
-    .btn-play:hover {
-      background: var(--accent-hover);
-    }
-
-    .btn-play:active {
-      transform: scale(0.98);
-    }
-
-    .status {
-      margin-top: 12px;
-      font-size: 0.82rem;
-      color: var(--muted);
-      min-height: 18px;
-    }
-
-    .status.error {
-      color: #ff6b6b;
-    }
-
-    /* Área do emulador */
-    #emulator-screen {
-      display: none;
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100dvh;
-      background: #000;
-      z-index: 10;
-    }
-
-    #emulator-screen.active {
-      display: block;
-    }
-
-    #game {
-      width: 100%;
-      height: 100%;
-    }
-
-    .btn-exit {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      z-index: 60;
-    }
-
-    .btn-pad-toggle {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 60;
-      height: 38px;
-      padding: 0 12px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #fff;
-      background: rgba(15, 18, 28, 0.84);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 10px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    /* Controle virtual de apoio */
-    .custom-pad {
-      display: none;
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 14px;
-      z-index: 55;
-      padding: 0 16px;
-      justify-content: space-between;
-      align-items: flex-end;
-      pointer-events: none;
-      user-select: none;
-      touch-action: none;
-    }
-
-    .custom-pad.active {
-      display: flex;
-    }
-
-    .dpad {
-      display: grid;
-      grid-template-columns: repeat(3, 52px);
-      grid-template-rows: repeat(3, 52px);
-      gap: 4px;
-      pointer-events: auto;
-    }
-
-    .vbtn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.95rem;
-      background: rgba(20, 24, 36, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      border-radius: 12px;
-      backdrop-filter: blur(6px);
-      touch-action: none;
-      user-select: none;
-    }
-
-    .vbtn.pressed {
-      background: rgba(217, 56, 30, 0.85);
-      transform: scale(0.95);
-    }
-
-    .action-group {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
-      pointer-events: auto;
-    }
-
-    .ab-group {
-      display: flex;
-      gap: 12px;
-    }
-
-    .vbtn-ab {
-      width: 60px;
-      height: 60px;
-      border-radius: 999px;
-      font-size: 1rem;
-    }
-
-    .sys-group {
-      display: flex;
-      gap: 8px;
-    }
-
-    .vbtn-sys {
-      padding: 6px 10px;
-      font-size: 0.7rem;
-      border-radius: 999px;
-    }
-  </style>
-</head>
-<body>
-  <main class="launcher" id="launcher">
-    <section class="card">
-      <div class="cart-stage" id="cart-stage">
-        <button class="btn-arrow btn-back-cover" id="btn-back-cover" type="button" aria-label="Voltar" title="Voltar">←</button>
-
-        <div class="nes-cart" id="nes-cart">
-          <div class="cart-face cart-front">
-            <div class="cart-ridge-grip"></div>
-            <div class="cart-label">
-              <img src="Mega%20Man%203%20NES.jpg" alt="Capa de Mega Man 3 no cartucho NES" />
-            </div>
-          </div>
-
-          <div class="cart-face cart-back">
-            <div class="cart-back-sticker">NINTENDO • NES</div>
-          </div>
-
-          <div class="cart-face cart-left"></div>
-          <div class="cart-face cart-right"></div>
-          <div class="cart-face cart-top"></div>
-          <div class="cart-face cart-bottom">
-            <div class="cart-pins"></div>
-          </div>
-        </div>
-
-        <div class="cart-shadow"></div>
-      </div>
-
-      <span class="badge">Nintendo Entertainment System • NES</span>
-      <h1>Mega Man 3</h1>
-      <p class="subtitle">Toca em jogar para iniciar o emulador no navegador.</p>
-      <button class="btn-play" id="btn-start" type="button">▶ Jogar Agora</button>
-      <p class="status" id="status-msg"></p>
-    </section>
-  </main>
-
-  <section id="emulator-screen" aria-label="Tela do jogo">
-    <button class="btn-arrow btn-exit" id="btn-exit" type="button" aria-label="Voltar à capa" title="Voltar à capa">←</button>
-    <button class="btn-pad-toggle" id="btn-pad-toggle" type="button">Controle</button>
-    <div id="game"></div>
-
-    <div class="custom-pad" id="custom-pad" aria-label="Controle virtual">
-      <div class="dpad">
-        <div></div>
-        <button class="vbtn" data-key="ArrowUp" data-code="ArrowUp" type="button">▲</button>
-        <div></div>
-        <button class="vbtn" data-key="ArrowLeft" data-code="ArrowLeft" type="button">◀</button>
-        <div></div>
-        <button class="vbtn" data-key="ArrowRight" data-code="ArrowRight" type="button">▶</button>
-        <div></div>
-        <button class="vbtn" data-key="ArrowDown" data-code="ArrowDown" type="button">▼</button>
-        <div></div>
-      </div>
-
-      <div class="action-group">
-        <div class="ab-group">
-          <button class="vbtn vbtn-ab" data-key="z" data-code="KeyZ" type="button">B</button>
-          <button class="vbtn vbtn-ab" data-key="x" data-code="KeyX" type="button">A</button>
-        </div>
-        <div class="sys-group">
-          <button class="vbtn vbtn-sys" data-key="Shift" data-code="ShiftRight" type="button">SELECT</button>
-          <button class="vbtn vbtn-sys" data-key="Enter" data-code="Enter" type="button">START</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <script>
-    const ROM_FILENAME = "mega-man-3.nes";
-    const COVER_FILENAME = "Mega Man 3 NES.jpg";
-
-    const launcherEl = document.getElementById("launcher");
-    const emulatorScreenEl = document.getElementById("emulator-screen");
-    const gameContainerEl = document.getElementById("game");
-    const cartStageEl = document.getElementById("cart-stage");
-    const nesCartEl = document.getElementById("nes-cart");
-    const btnStart = document.getElementById("btn-start");
-    const btnExit = document.getElementById("btn-exit");
-    const btnBackCover = document.getElementById("btn-back-cover");
-    const btnPadToggle = document.getElementById("btn-pad-toggle");
-    const customPadEl = document.getElementById("custom-pad");
-    const statusMsg = document.getElementById("status-msg");
-
-    let emulatorLoaded = false;
-
-    function updateCartTilt(clientX, clientY) {
-      const rect = cartStageEl.getBoundingClientRect();
-      const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-      const y = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
-      const ry = (x - 0.5) * 44;
-      const rx = (0.5 - y) * 28;
-
-      nesCartEl.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
-      nesCartEl.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
-      nesCartEl.style.setProperty("--gx", `${(x * 100).toFixed(0)}%`);
-      nesCartEl.style.setProperty("--gy", `${(y * 100).toFixed(0)}%`);
-    }
-
-    function resetCartTilt() {
-      nesCartEl.style.setProperty("--rx", "6deg");
-      nesCartEl.style.setProperty("--ry", "-18deg");
-      nesCartEl.style.setProperty("--gx", "50%");
-      nesCartEl.style.setProperty("--gy", "30%");
-    }
-
-    cartStageEl.addEventListener("pointermove", (e) => {
-      if (e.target.closest(".btn-back-cover")) return;
-      updateCartTilt(e.clientX, e.clientY);
-    });
-
-    cartStageEl.addEventListener("pointerleave", resetCartTilt);
-    cartStageEl.addEventListener("pointercancel", resetCartTilt);
-
-    async function verificarRomAcessivel(url) {
-      try {
-        const res = await fetch(url, { method: "HEAD", cache: "no-store" });
-        if (!res.ok) {
-          return { ok: false, motivo: `Não foi possível aceder à ROM (HTTP ${res.status}).` };
-        }
-        const len = Number(res.headers.get("content-length") || 0);
-        if (res.headers.has("content-length") && len < 1024) {
-          return { ok: false, motivo: "O ficheiro da ROM parece vazio ou corrompido (< 1 KB)." };
-        }
-        return { ok: true };
-      } catch (err) {
-        return { ok: true };
-      }
-    }
-
-    function iniciarEmulatorJS(romUrl) {
-      if (emulatorLoaded) return;
-      emulatorLoaded = true;
-
-      window.EJS_player = "#game";
-      window.EJS_core = "nes";
-      window.EJS_gameName = "Mega Man 3";
-      window.EJS_gameUrl = romUrl;
-      window.EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
-      window.EJS_startOnLoaded = true;
-      window.EJS_fullscreenOnLoaded = false;
-      window.EJS_virtualGamepad = true;
-      window.EJS_backgroundImage = encodeURI(COVER_FILENAME);
-
-      const script = document.createElement("script");
-      script.src = "https://cdn.emulatorjs.org/stable/data/loader.js";
-      script.async = true;
-      script.onerror = () => {
-        statusMsg.textContent = "Falha ao carregar o motor do EmulatorJS. Verifica a tua ligação.";
-        statusMsg.classList.add("error");
-      };
-      document.body.appendChild(script);
-    }
-
-    function sendEmulatorKey(type, key, code) {
-      const target = document.querySelector("#game canvas") || window;
-      const event = new KeyboardEvent(type, {
-        key,
-        code,
-        bubbles: true,
-        cancelable: true
-      });
-      target.dispatchEvent(event);
-      if (target !== window) {
-        window.dispatchEvent(event);
-      }
-    }
-
-    document.querySelectorAll("#custom-pad .vbtn").forEach((btn) => {
-      const key = btn.dataset.key;
-      const code = btn.dataset.code;
-
-      const onDown = (e) => {
-        e.preventDefault();
-        btn.classList.add("pressed");
-        sendEmulatorKey("keydown", key, code);
-      };
-
-      const onUp = (e) => {
-        e.preventDefault();
-        btn.classList.remove("pressed");
-        sendEmulatorKey("keyup", key, code);
-      };
-
-      btn.addEventListener("pointerdown", onDown);
-      btn.addEventListener("pointerup", onUp);
-      btn.addEventListener("pointercancel", onUp);
-      btn.addEventListener("lostpointercapture", onUp);
-    });
-
-    btnPadToggle.addEventListener("click", () => {
-      customPadEl.classList.toggle("active");
-    });
-
-    btnStart.addEventListener("click", async () => {
-      statusMsg.classList.remove("error");
-      statusMsg.textContent = "A verificar ficheiro da ROM...";
-
-      const romUrl = encodeURI(ROM_FILENAME);
-      const check = await verificarRomAcessivel(romUrl);
-
-      if (!check.ok) {
-        statusMsg.textContent = `${check.motivo} Confere o nome exato do ficheiro .nes na pasta.`;
-        statusMsg.classList.add("error");
-        return;
-      }
-
-      launcherEl.style.display = "none";
-      emulatorScreenEl.classList.add("active");
-      gameContainerEl.style.width = "100%";
-      gameContainerEl.style.height = "100%";
-
-      iniciarEmulatorJS(romUrl);
-    });
-
-    btnBackCover.addEventListener("click", () => {
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        statusMsg.textContent = "Já estás na tela inicial do jogo.";
-      }
-    });
-
-    btnExit.addEventListener("click", () => {
-      window.location.reload();
-    });
-  </script>
-</body>
-</html>
+      height: var
